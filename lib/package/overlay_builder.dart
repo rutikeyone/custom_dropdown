@@ -37,7 +37,7 @@ class _OverlayBuilderState extends State<_OverlayBuilder> {
 
   void addToOverlay(OverlayEntry entry) {
     widget.overlayChanged(true);
-    return Overlay.of(context)?.insert(entry);
+    return Overlay.of(context).insert(entry);
   }
 
   void hideOverlay() {

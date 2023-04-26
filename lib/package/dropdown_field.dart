@@ -1,6 +1,6 @@
 part of 'custom_dropdown.dart';
 
-final _textFieldIcon = const Icon(
+const _textFieldIcon = Icon(
   Icons.keyboard_arrow_down_rounded,
   color: Colors.black,
   size: 24,

@@ -17,6 +17,7 @@ class _DropdownOverlay extends StatefulWidget {
   final bool? canCloseOutsideBounds;
   final ValueChanged<int>? onChangedIndex;
   final GlobalKey stickyKey;
+  final Widget? selectedIcon;
 
   const _DropdownOverlay({
     Key? key,
@@ -32,6 +33,7 @@ class _DropdownOverlay extends StatefulWidget {
     this.excludeSelected,
     this.canCloseOutsideBounds,
     this.onChangedIndex,
+    this.selectedIcon,
   }) : super(key: key);
 
   @override
@@ -91,6 +93,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
     const listPadding = EdgeInsets.zero;
     final list = items.isNotEmpty
         ? _ItemsList(
+            selectedIcon: widget.selectedIcon,
             scrollController: scrollController,
             excludeSelected:
                 widget.items.length > 1 ? widget.excludeSelected! : false,
@@ -108,11 +111,11 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
               setState(() => displayOverly = false);
             },
           )
-        : SizedBox(
+        : const SizedBox(
             height: 48,
-            child: const Center(
+            child: Center(
               child: Text(
-                'Данные для выбора отсутствуют',
+                'There is no data for selection',
                 style: TextStyle(fontSize: 16),
               ),
             ),
@@ -215,6 +218,7 @@ class _ItemsList extends StatelessWidget {
   final ValueSetter<int> onItemSelect;
   final EdgeInsets padding;
   final TextStyle? itemTextStyle;
+  final Widget? selectedIcon;
 
   const _ItemsList({
     Key? key,
@@ -225,6 +229,7 @@ class _ItemsList extends StatelessWidget {
     required this.onItemSelect,
     required this.padding,
     this.itemTextStyle,
+    this.selectedIcon,
   }) : super(key: key);
 
   @override
@@ -266,14 +271,14 @@ class _ItemsList extends StatelessWidget {
                           ),
                         ),
                         selected
-                            ? const Icon(Icons.add, size: 32)
+                            ? selectedIcon ?? const SizedBox.shrink()
                             : const SizedBox.shrink(),
                       ],
                     ),
                   ),
-                  Padding(
+                  const Padding(
                       padding: EdgeInsets.only(left: 16),
-                      child: const Divider(height: 1, thickness: 1)),
+                      child: Divider(height: 1, thickness: 1)),
                 ],
               ),
             ),

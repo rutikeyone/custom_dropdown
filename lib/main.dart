@@ -36,6 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomDropdown(
+            selectedIcon: const Icon(Icons.check, size: 24),
             overlayChanged: (value) {
               setState(() {
                 groupOverlayState = value;
