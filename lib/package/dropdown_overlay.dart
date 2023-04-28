@@ -84,7 +84,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    late final double topPadding;
+    double topPadding = 6;
     final keyContext = widget.stickyKey.currentContext;
     if (keyContext != null) {
       final renderBox = keyContext.findRenderObject() as RenderBox;
