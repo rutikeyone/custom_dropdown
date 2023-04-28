@@ -18,6 +18,7 @@ class _DropdownOverlay extends StatefulWidget {
   final ValueChanged<int>? onChangedIndex;
   final GlobalKey stickyKey;
   final Widget? selectedIcon;
+  final Color? itemBackgroundColor;
 
   const _DropdownOverlay({
     Key? key,
@@ -34,6 +35,7 @@ class _DropdownOverlay extends StatefulWidget {
     this.canCloseOutsideBounds,
     this.onChangedIndex,
     this.selectedIcon,
+    this.itemBackgroundColor,
   }) : super(key: key);
 
   @override
@@ -93,6 +95,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
     const listPadding = EdgeInsets.zero;
     final list = items.isNotEmpty
         ? _ItemsList(
+            itemBackgroundColor: widget.itemBackgroundColor,
             selectedIcon: widget.selectedIcon,
             scrollController: scrollController,
             excludeSelected:
@@ -219,6 +222,7 @@ class _ItemsList extends StatelessWidget {
   final EdgeInsets padding;
   final TextStyle? itemTextStyle;
   final Widget? selectedIcon;
+  final Color? itemBackgroundColor;
 
   const _ItemsList({
     Key? key,
@@ -230,6 +234,7 @@ class _ItemsList extends StatelessWidget {
     required this.padding,
     this.itemTextStyle,
     this.selectedIcon,
+    this.itemBackgroundColor,
   }) : super(key: key);
 
   @override
@@ -256,8 +261,8 @@ class _ItemsList extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    constraints: BoxConstraints(minHeight: 48),
-                    color: Colors.transparent,
+                    constraints: const BoxConstraints(minHeight: 48),
+                    color: itemBackgroundColor ?? Colors.transparent,
                     padding: _listItemPadding,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

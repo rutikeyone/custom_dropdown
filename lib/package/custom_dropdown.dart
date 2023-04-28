@@ -28,6 +28,7 @@ class CustomDropdown extends StatefulWidget {
   final ValueChanged<bool> overlayChanged;
   final String? selectedItem;
   final Widget? selectedIcon;
+  final Color? itemBackgroundColor;
 
   const CustomDropdown({
     Key? key,
@@ -50,6 +51,7 @@ class CustomDropdown extends StatefulWidget {
     this.heightButton,
     this.selectedItem,
     this.selectedIcon,
+    this.itemBackgroundColor,
   })  : canCloseOutsideBounds = true,
         super(key: key);
 
@@ -93,6 +95,7 @@ class CustomDropdownState extends State<CustomDropdown> {
       overlayChanged: widget.overlayChanged,
       overlay: (size, hideCallback) {
         return _DropdownOverlay(
+          itemBackgroundColor: widget.itemBackgroundColor,
           selectedIcon: widget.selectedIcon,
           stickyKey: _stickyKey,
           onChangedIndex: widget.onChangedIndex,
