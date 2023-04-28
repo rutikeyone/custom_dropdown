@@ -84,12 +84,10 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    double topPadding = 6;
+    late final double topPadding;
     final keyContext = widget.stickyKey.currentContext;
-    if (keyContext != null) {
-      final renderBox = keyContext.findRenderObject() as RenderBox;
-      topPadding = renderBox.size.height + 6;
-    }
+    final renderBox = keyContext!.findRenderObject() as RenderBox;
+    topPadding = renderBox.size.height + 6;
     final borderRadius = BorderRadius.circular(12);
     final overlayOffset = Offset(-12, topPadding);
     const listPadding = EdgeInsets.zero;
