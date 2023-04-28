@@ -48,6 +48,7 @@ class _OverlayBuilderState extends State<_OverlayBuilder> {
 
   @override
   void dispose() {
+    overlayEntry?.remove();
     overlayEntry?.dispose();
     super.dispose();
   }
