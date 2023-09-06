@@ -19,6 +19,7 @@ class _DropdownOverlay extends StatefulWidget {
   final GlobalKey stickyKey;
   final Widget? selectedIcon;
   final Color? itemBackgroundColor;
+  final Decoration? decoration;
 
   const _DropdownOverlay({
     Key? key,
@@ -36,6 +37,7 @@ class _DropdownOverlay extends StatefulWidget {
     this.onChangedIndex,
     this.selectedIcon,
     this.itemBackgroundColor,
+    this.decoration,
   }) : super(key: key);
 
   @override
@@ -138,17 +140,18 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
               key: key1,
               padding: _overlayOuterPadding,
               child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: borderRadius,
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 24.0,
-                      color: Colors.black.withOpacity(.08),
-                      offset: _overlayShadowOffset,
+                decoration: widget.decoration ??
+                    BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: borderRadius,
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 24.0,
+                          color: Colors.black.withOpacity(.08),
+                          offset: _overlayShadowOffset,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
                 child: Material(
                   color: Colors.transparent,
                   child: AnimatedSection(
