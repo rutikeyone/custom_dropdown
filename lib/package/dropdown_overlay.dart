@@ -20,6 +20,7 @@ class _DropdownOverlay extends StatefulWidget {
   final Widget? selectedIcon;
   final Color? itemBackgroundColor;
   final Decoration? decoration;
+  final String? notElementLabel;
 
   const _DropdownOverlay({
     Key? key,
@@ -38,6 +39,7 @@ class _DropdownOverlay extends StatefulWidget {
     this.selectedIcon,
     this.itemBackgroundColor,
     this.decoration,
+    this.notElementLabel,
   }) : super(key: key);
 
   @override
@@ -116,12 +118,12 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
               setState(() => displayOverly = false);
             },
           )
-        : const SizedBox(
+        : SizedBox(
             height: 48,
             child: Center(
               child: Text(
-                'There is no data for selection',
-                style: TextStyle(fontSize: 16),
+                widget.notElementLabel ?? 'There is no data for selection',
+                style: const TextStyle(fontSize: 16),
               ),
             ),
           );
