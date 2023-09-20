@@ -21,6 +21,8 @@ class _DropdownOverlay extends StatefulWidget {
   final Color? itemBackgroundColor;
   final Decoration? decoration;
   final String? notElementLabel;
+  final TextStyle? selectedItemStyle;
+  final Widget Function(Widget, ScrollController)? itemBuilder;
 
   const _DropdownOverlay({
     Key? key,
@@ -40,6 +42,8 @@ class _DropdownOverlay extends StatefulWidget {
     this.itemBackgroundColor,
     this.decoration,
     this.notElementLabel,
+    this.selectedItemStyle,
+    this.itemBuilder,
   }) : super(key: key);
 
   @override
@@ -97,36 +101,48 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
     final borderRadius = BorderRadius.circular(12);
     final overlayOffset = Offset(-12, topPadding);
     const listPadding = EdgeInsets.zero;
-    final list = items.isNotEmpty
-        ? _ItemsList(
-            itemBackgroundColor: widget.itemBackgroundColor,
-            selectedIcon: widget.selectedIcon,
-            scrollController: scrollController,
-            excludeSelected:
-                widget.items.length > 1 ? widget.excludeSelected! : false,
-            items: items,
-            padding: listPadding,
-            headerText: headerText,
-            itemTextStyle: widget.listItemStyle,
-            onItemSelect: (value) {
-              if (headerText != items[value]) {
-                widget.controller.text = items[value];
-                if (widget.onChangedIndex != null) {
-                  widget.onChangedIndex!(value);
-                }
-              }
-              setState(() => displayOverly = false);
-            },
-          )
-        : SizedBox(
-            height: 48,
-            child: Center(
-              child: Text(
-                widget.notElementLabel ?? 'There is no data for selection',
-                style: const TextStyle(fontSize: 16),
-              ),
+
+    final itemList = _ItemsList(
+      selectedItemStyle: widget.selectedItemStyle,
+      itemBackgroundColor: widget.itemBackgroundColor,
+      selectedIcon: widget.selectedIcon,
+      scrollController: scrollController,
+      excludeSelected:
+          widget.items.length > 1 ? widget.excludeSelected! : false,
+      items: items,
+      padding: listPadding,
+      headerText: headerText,
+      itemTextStyle: widget.listItemStyle,
+      onItemSelect: (value) {
+        if (headerText != items[value]) {
+          widget.controller.text = items[value];
+          if (widget.onChangedIndex != null) {
+            widget.onChangedIndex!(value);
+          }
+        }
+        setState(() => displayOverly = false);
+      },
+    );
+
+    final Widget list = () {
+      if (items.isNotEmpty) {
+        if (widget.itemBuilder != null) {
+          return widget.itemBuilder!(itemList, scrollController);
+        } else {
+          return itemList;
+        }
+      } else {
+        return SizedBox(
+          height: 48,
+          child: Center(
+            child: Text(
+              widget.notElementLabel ?? 'There is no data for selection',
+              style: const TextStyle(fontSize: 16),
             ),
-          );
+          ),
+        );
+      }
+    }.call();
 
     final child = Stack(
       children: [
@@ -228,6 +244,7 @@ class _ItemsList extends StatelessWidget {
   final TextStyle? itemTextStyle;
   final Widget? selectedIcon;
   final Color? itemBackgroundColor;
+  final TextStyle? selectedItemStyle;
 
   const _ItemsList({
     Key? key,
@@ -240,6 +257,7 @@ class _ItemsList extends StatelessWidget {
     this.itemTextStyle,
     this.selectedIcon,
     this.itemBackgroundColor,
+    this.selectedItemStyle,
   }) : super(key: key);
 
   @override
@@ -275,7 +293,7 @@ class _ItemsList extends StatelessWidget {
                         Flexible(
                           child: Text(
                             items[index],
-                            style: listItemStyle,
+                            style: selected ? selectedItemStyle : listItemStyle,
                             maxLines: 5,
                             overflow: TextOverflow.ellipsis,
                           ),

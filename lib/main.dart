@@ -43,11 +43,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 groupOverlayState = value;
               });
             },
-            hintText: 'Select group',
+            hintText: 'Select Group',
             items: const [
               "Group 1",
               "Group 2",
+              "Group 3",
+              "Group 4",
+              "Group 5",
+              "Group 6",
+              "Group 7",
+              "Group 8",
             ],
+            selectedItemStyle: const TextStyle(color: Colors.green),
             excludeSelected: false,
             borderSide: BorderSide(
                 width: 1,
@@ -68,9 +75,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   size: 18,
                   color: groupOverlayState ? Colors.pink : Colors.black),
             ),
+            itemBuilder: _itemBuilder,
           ),
         ],
       ),
+    );
+  }
+
+  Widget _itemBuilder(Widget p1, ScrollController p2) {
+    return RawScrollbar(
+      controller: p2,
+      child: p1,
     );
   }
 }

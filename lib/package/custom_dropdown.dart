@@ -15,6 +15,7 @@ class CustomDropdown extends StatefulWidget {
   final String? errorText;
   final TextStyle? errorStyle;
   final TextStyle? listItemStyle;
+  final TextStyle? selectedItemStyle;
   final BorderSide? borderSide;
   final BorderSide? errorBorderSide;
   final BorderRadius? borderRadius;
@@ -31,6 +32,7 @@ class CustomDropdown extends StatefulWidget {
   final Color? itemBackgroundColor;
   final Decoration? decoration;
   final String? notElementLabel;
+  final Widget Function(Widget, ScrollController)? itemBuilder;
 
   const CustomDropdown({
     Key? key,
@@ -42,6 +44,7 @@ class CustomDropdown extends StatefulWidget {
     this.errorText,
     this.errorStyle,
     this.listItemStyle,
+    this.selectedItemStyle,
     this.errorBorderSide,
     this.borderRadius,
     this.borderSide,
@@ -56,6 +59,7 @@ class CustomDropdown extends StatefulWidget {
     this.itemBackgroundColor,
     this.decoration,
     this.notElementLabel,
+    this.itemBuilder,
   })  : canCloseOutsideBounds = true,
         super(key: key);
 
@@ -99,6 +103,7 @@ class CustomDropdownState extends State<CustomDropdown> {
       overlayChanged: widget.overlayChanged,
       overlay: (size, hideCallback) {
         return _DropdownOverlay(
+          selectedItemStyle: widget.selectedItemStyle,
           notElementLabel: widget.notElementLabel,
           decoration: widget.decoration,
           itemBackgroundColor: widget.itemBackgroundColor,
@@ -115,6 +120,7 @@ class CustomDropdownState extends State<CustomDropdown> {
           listItemStyle: widget.listItemStyle,
           excludeSelected: widget.excludeSelected,
           canCloseOutsideBounds: widget.canCloseOutsideBounds,
+          itemBuilder: widget.itemBuilder,
         );
       },
       child: (showCallback) {

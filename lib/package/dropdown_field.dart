@@ -86,6 +86,8 @@ class _DropDownFieldState extends State<_DropDownField> {
 
   @override
   Widget build(BuildContext context) {
+    final hintText = widget.hintText;
+
     final contentPadding = EdgeInsets.symmetric(
         horizontal: 16,
         vertical: widget.height != null ? widget.height! / 2 - 9.5 : 0);
