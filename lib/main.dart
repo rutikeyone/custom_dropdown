@@ -36,6 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomDropdown(
+            noElementStyle: const TextStyle(fontSize: 18, color: Colors.red),
             itemBackgroundColor: Colors.red,
             selectedIcon: const Icon(Icons.check, size: 24),
             overlayChanged: (value) {
@@ -44,16 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             },
             hintText: 'Select Group',
-            items: const [
-              "Group 1",
-              "Group 2",
-              "Group 3",
-              "Group 4",
-              "Group 5",
-              "Group 6",
-              "Group 7",
-              "Group 8",
-            ],
+            items: const [],
             selectedItemStyle: const TextStyle(color: Colors.green),
             excludeSelected: false,
             borderSide: BorderSide(
