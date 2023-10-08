@@ -34,6 +34,7 @@ class CustomDropdown extends StatefulWidget {
   final String? notElementLabel;
   final TextStyle? noElementStyle;
   final Widget Function(Widget, ScrollController)? itemBuilder;
+  final TextEditingController? controller;
 
   const CustomDropdown({
     Key? key,
@@ -62,6 +63,7 @@ class CustomDropdown extends StatefulWidget {
     this.noElementStyle,
     this.notElementLabel,
     this.itemBuilder,
+    this.controller,
   })  : canCloseOutsideBounds = true,
         super(key: key);
 
@@ -76,13 +78,19 @@ class CustomDropdownState extends State<CustomDropdown> {
 
   @override
   void initState() {
-    controller = TextEditingController(text: widget.selectedItem);
+    final selectedItem = widget.selectedItem;
+    controller = widget.controller ?? TextEditingController(text: selectedItem);
+    if (widget.controller != null && selectedItem != null) {
+      widget.controller?.text = selectedItem;
+    }
     super.initState();
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    if (widget.controller == null) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
