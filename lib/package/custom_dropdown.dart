@@ -36,6 +36,7 @@ class CustomDropdown extends StatefulWidget {
   final Widget Function(Widget, ScrollController)? itemBuilder;
   final TextEditingController? controller;
   final double? maxHeight;
+  final ScrollbarThemeData? scrollBarTheme;
 
   const CustomDropdown({
     Key? key,
@@ -66,6 +67,7 @@ class CustomDropdown extends StatefulWidget {
     this.itemBuilder,
     this.controller,
     this.maxHeight,
+    this.scrollBarTheme,
   })  : canCloseOutsideBounds = true,
         super(key: key);
 
@@ -135,6 +137,7 @@ class CustomDropdownState extends State<CustomDropdown> {
           canCloseOutsideBounds: widget.canCloseOutsideBounds,
           itemBuilder: widget.itemBuilder,
           maxHeight: widget.maxHeight,
+          scrollBarTheme: widget.scrollBarTheme,
         );
       },
       child: (showCallback) {

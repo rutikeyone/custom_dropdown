@@ -25,6 +25,7 @@ class _DropdownOverlay extends StatefulWidget {
   final TextStyle? selectedItemStyle;
   final Widget Function(Widget, ScrollController)? itemBuilder;
   final double? maxHeight;
+  final ScrollbarThemeData? scrollBarTheme;
 
   const _DropdownOverlay({
     Key? key,
@@ -48,6 +49,7 @@ class _DropdownOverlay extends StatefulWidget {
     this.selectedItemStyle,
     this.itemBuilder,
     this.maxHeight,
+    this.scrollBarTheme,
   }) : super(key: key);
 
   @override
@@ -194,16 +196,17 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                           },
                           child: Theme(
                             data: Theme.of(context).copyWith(
-                              scrollbarTheme: ScrollbarThemeData(
-                                thumbVisibility: MaterialStateProperty.all(
-                                  true,
-                                ),
-                                thickness: MaterialStateProperty.all(5),
-                                radius: const Radius.circular(4),
-                                thumbColor: MaterialStateProperty.all(
-                                  Colors.grey[300],
-                                ),
-                              ),
+                              scrollbarTheme: widget.scrollBarTheme ??
+                                  ScrollbarThemeData(
+                                    thumbVisibility: MaterialStateProperty.all(
+                                      true,
+                                    ),
+                                    thickness: MaterialStateProperty.all(5),
+                                    radius: const Radius.circular(4),
+                                    thumbColor: MaterialStateProperty.all(
+                                      Colors.grey[300],
+                                    ),
+                                  ),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
