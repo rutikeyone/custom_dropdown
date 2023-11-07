@@ -24,6 +24,7 @@ class _DropdownOverlay extends StatefulWidget {
   final String? notElementLabel;
   final TextStyle? selectedItemStyle;
   final Widget Function(Widget, ScrollController)? itemBuilder;
+  final double? maxHeight;
 
   const _DropdownOverlay({
     Key? key,
@@ -46,6 +47,7 @@ class _DropdownOverlay extends StatefulWidget {
     this.notElementLabel,
     this.selectedItemStyle,
     this.itemBuilder,
+    this.maxHeight,
   }) : super(key: key);
 
   @override
@@ -180,7 +182,8 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                     axisAlignment: displayOverlayBottom ? 1.0 : -1.0,
                     child: SizedBox(
                       key: key2,
-                      height: items.length > 4 ? 216 : null,
+                      height:
+                          widget.maxHeight ?? (items.length > 4 ? 216 : null),
                       child: ClipRRect(
                         borderRadius: borderRadius,
                         child: NotificationListener<

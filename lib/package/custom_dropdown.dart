@@ -35,6 +35,7 @@ class CustomDropdown extends StatefulWidget {
   final TextStyle? noElementStyle;
   final Widget Function(Widget, ScrollController)? itemBuilder;
   final TextEditingController? controller;
+  final double? maxHeight;
 
   const CustomDropdown({
     Key? key,
@@ -64,6 +65,7 @@ class CustomDropdown extends StatefulWidget {
     this.notElementLabel,
     this.itemBuilder,
     this.controller,
+    this.maxHeight,
   })  : canCloseOutsideBounds = true,
         super(key: key);
 
@@ -132,6 +134,7 @@ class CustomDropdownState extends State<CustomDropdown> {
           excludeSelected: widget.excludeSelected,
           canCloseOutsideBounds: widget.canCloseOutsideBounds,
           itemBuilder: widget.itemBuilder,
+          maxHeight: widget.maxHeight,
         );
       },
       child: (showCallback) {
