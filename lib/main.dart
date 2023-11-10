@@ -76,7 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   size: 18,
                   color: groupOverlayState ? Colors.pink : Colors.black),
             ),
-            maxHeight: items.length > 2 ? 48 * 2 : null,
             scrollBarTheme: ScrollbarThemeData(
               thumbVisibility: MaterialStateProperty.all(true),
               thickness: MaterialStateProperty.all(4),

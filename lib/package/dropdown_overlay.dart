@@ -24,7 +24,6 @@ class _DropdownOverlay extends StatefulWidget {
   final String? notElementLabel;
   final TextStyle? selectedItemStyle;
   final Widget Function(Widget, ScrollController)? itemBuilder;
-  final double? maxHeight;
   final ScrollbarThemeData? scrollBarTheme;
 
   const _DropdownOverlay({
@@ -48,7 +47,6 @@ class _DropdownOverlay extends StatefulWidget {
     this.notElementLabel,
     this.selectedItemStyle,
     this.itemBuilder,
-    this.maxHeight,
     this.scrollBarTheme,
   }) : super(key: key);
 
