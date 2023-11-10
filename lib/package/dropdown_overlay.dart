@@ -184,8 +184,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                     axisAlignment: displayOverlayBottom ? 1.0 : -1.0,
                     child: SizedBox(
                       key: key2,
-                      height:
-                          widget.maxHeight ?? (items.length > 4 ? 216 : null),
+                      height: items.length > 2 ? 96 : null,
                       child: ClipRRect(
                         borderRadius: borderRadius,
                         child: NotificationListener<
@@ -212,7 +211,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                items.length > 4 ? Expanded(child: list) : list
+                                items.length > 2 ? Expanded(child: list) : list
                               ],
                             ),
                           ),
