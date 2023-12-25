@@ -1,14 +1,14 @@
 import 'package:custom_dropdown/package/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
-class Data {
+class Data implements NamedValue {
   final String id;
   final String text;
 
   const Data(this.id, this.text);
 
   @override
-  String toString() {
+  String getName() {
     return text;
   }
 }

@@ -4,10 +4,14 @@ const _overlayOuterPadding = EdgeInsets.only(bottom: 12, left: 12, right: 12);
 const _overlayShadowOffset = Offset(0, 6);
 const _listItemPadding = EdgeInsets.symmetric(vertical: 12, horizontal: 16);
 
-class _DropdownOverlay<T> extends StatefulWidget {
+abstract class NamedValue {
+  String getName();
+}
+
+class _DropdownOverlay extends StatefulWidget {
   final TextEditingController controller;
-  final T? selectedItem;
-  final List<T> items;
+  final NamedValue? selectedItem;
+  final List<NamedValue> items;
   final Size size;
   final LayerLink layerLink;
   final VoidCallback hideOverlay;
@@ -53,15 +57,15 @@ class _DropdownOverlay<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DropdownOverlayState<T> createState() => _DropdownOverlayState<T>();
+  _DropdownOverlayState createState() => _DropdownOverlayState();
 }
 
-class _DropdownOverlayState<T> extends State<_DropdownOverlay> {
+class _DropdownOverlayState extends State<_DropdownOverlay> {
   bool displayOverly = true;
   bool displayOverlayBottom = true;
   late String headerText;
-  late List<T> items;
-  late List<T> filteredItems;
+  late List<NamedValue> items;
+  late List<NamedValue> filteredItems;
   final key1 = GlobalKey(), key2 = GlobalKey();
   final scrollController = ScrollController();
 
@@ -82,9 +86,9 @@ class _DropdownOverlayState<T> extends State<_DropdownOverlay> {
     headerText =
         widget.selectedItem != null ? widget.selectedItem.toString() : widget.controller.text;
     if (widget.excludeSelected! && widget.items.length > 1 && widget.selectedItem != null) {
-      items = widget.items.where((item) => item != widget.selectedItem).toList() as List<T>;
+      items = widget.items.where((item) => item != widget.selectedItem).toList();
     } else {
-      items = widget.items as List<T>;
+      items = widget.items;
     }
     filteredItems = items;
   }
@@ -120,7 +124,7 @@ class _DropdownOverlayState<T> extends State<_DropdownOverlay> {
       itemTextStyle: widget.listItemStyle,
       onItemSelect: (value) {
         if (widget.selectedItem != items[value]) {
-          widget.controller.text = items[value].toString();
+          widget.controller.text = items[value].getName();
           if (widget.onChangedIndex != null) {
             widget.onChangedIndex!(value);
           }
@@ -236,10 +240,10 @@ class _DropdownOverlayState<T> extends State<_DropdownOverlay> {
   }
 }
 
-class _ItemsList<T> extends StatelessWidget {
+class _ItemsList extends StatelessWidget {
   final ScrollController scrollController;
-  final List<T> items;
-  final T selectedItem;
+  final List<NamedValue> items;
+  final NamedValue? selectedItem;
   final bool excludeSelected;
   final String headerText;
   final ValueSetter<int> onItemSelect;
@@ -279,7 +283,9 @@ class _ItemsList<T> extends StatelessWidget {
         itemCount: items.length,
         itemBuilder: (_, index) {
           final selected = !excludeSelected &&
-              (selectedItem != null ? selectedItem == items[index] : headerText == items[index]);
+              (selectedItem != null
+                  ? selectedItem == items[index]
+                  : headerText == items[index].getName());
           return Material(
             color: Colors.transparent,
             child: InkWell(
@@ -297,7 +303,7 @@ class _ItemsList<T> extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            items[index].toString(),
+                            items[index].getName(),
                             style: selected ? selectedItemStyle : listItemStyle,
                             maxLines: 5,
                             overflow: TextOverflow.ellipsis,

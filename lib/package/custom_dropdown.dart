@@ -7,8 +7,8 @@ part 'dropdown_field.dart';
 part 'dropdown_overlay.dart';
 part 'overlay_builder.dart';
 
-class CustomDropdown<T> extends StatefulWidget {
-  final List<T> items;
+class CustomDropdown extends StatefulWidget {
+  final List<NamedValue> items;
   final String? hintText;
   final TextStyle? hintStyle;
   final TextStyle? selectedStyle;
@@ -26,7 +26,7 @@ class CustomDropdown<T> extends StatefulWidget {
   final bool? canCloseOutsideBounds;
   final double? heightButton;
   final ValueChanged<bool> overlayChanged;
-  final T? selectedItem;
+  final NamedValue? selectedItem;
   final Widget? selectedIcon;
   final Color? itemBackgroundColor;
   final Decoration? decoration;
@@ -79,9 +79,9 @@ class CustomDropdownState extends State<CustomDropdown> {
   @override
   void initState() {
     final selectedItem = widget.selectedItem;
-    controller = widget.controller ?? TextEditingController(text: selectedItem);
+    controller = widget.controller ?? TextEditingController(text: selectedItem?.getName() ?? "");
     if (widget.controller != null && selectedItem != null) {
-      widget.controller?.text = selectedItem;
+      widget.controller?.text = selectedItem.getName();
     }
     super.initState();
   }

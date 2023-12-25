@@ -6,7 +6,7 @@ const _textFieldIcon = Icon(
   size: 24,
 );
 
-class _DropDownField<T> extends StatefulWidget {
+class _DropDownField extends StatefulWidget {
   final TextEditingController controller;
   final VoidCallback onTap;
   final String? hintText;
