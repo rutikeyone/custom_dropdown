@@ -4,9 +4,10 @@ const _overlayOuterPadding = EdgeInsets.only(bottom: 12, left: 12, right: 12);
 const _overlayShadowOffset = Offset(0, 6);
 const _listItemPadding = EdgeInsets.symmetric(vertical: 12, horizontal: 16);
 
-class _DropdownOverlay extends StatefulWidget {
-  final List<String> items;
+class _DropdownOverlay<T> extends StatefulWidget {
   final TextEditingController controller;
+  final T? selectedItem;
+  final List<T> items;
   final Size size;
   final LayerLink layerLink;
   final VoidCallback hideOverlay;
@@ -28,8 +29,9 @@ class _DropdownOverlay extends StatefulWidget {
 
   const _DropdownOverlay({
     Key? key,
-    required this.items,
     required this.controller,
+    required this.selectedItem,
+    required this.items,
     required this.size,
     required this.layerLink,
     required this.hideOverlay,
@@ -51,15 +53,15 @@ class _DropdownOverlay extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DropdownOverlayState createState() => _DropdownOverlayState();
+  _DropdownOverlayState<T> createState() => _DropdownOverlayState<T>();
 }
 
-class _DropdownOverlayState extends State<_DropdownOverlay> {
+class _DropdownOverlayState<T> extends State<_DropdownOverlay> {
   bool displayOverly = true;
   bool displayOverlayBottom = true;
   late String headerText;
-  late List<String> items;
-  late List<String> filteredItems;
+  late List<T> items;
+  late List<T> filteredItems;
   final key1 = GlobalKey(), key2 = GlobalKey();
   final scrollController = ScrollController();
 
@@ -77,13 +79,12 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
       }
     });
 
-    headerText = widget.controller.text;
-    if (widget.excludeSelected! &&
-        widget.items.length > 1 &&
-        widget.controller.text.isNotEmpty) {
-      items = widget.items.where((item) => item != headerText).toList();
+    headerText =
+        widget.selectedItem != null ? widget.selectedItem.toString() : widget.controller.text;
+    if (widget.excludeSelected! && widget.items.length > 1 && widget.selectedItem != null) {
+      items = widget.items.where((item) => item != widget.selectedItem).toList() as List<T>;
     } else {
-      items = widget.items;
+      items = widget.items as List<T>;
     }
     filteredItems = items;
   }
@@ -99,7 +100,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
     late final double topPadding;
     final keyContext = widget.stickyKey.currentContext;
     if (keyContext != null) {
-      final renderBox = keyContext!.findRenderObject() as RenderBox;
+      final renderBox = keyContext.findRenderObject() as RenderBox;
       topPadding = renderBox.size.height + 6;
     }
     final borderRadius = BorderRadius.circular(12);
@@ -107,19 +108,19 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
     const listPadding = EdgeInsets.zero;
 
     final itemList = _ItemsList(
+      selectedItem: widget.selectedItem,
       selectedItemStyle: widget.selectedItemStyle,
       itemBackgroundColor: widget.itemBackgroundColor,
       selectedIcon: widget.selectedIcon,
       scrollController: scrollController,
-      excludeSelected:
-          widget.items.length > 1 ? widget.excludeSelected! : false,
+      excludeSelected: widget.items.length > 1 ? widget.excludeSelected! : false,
       items: items,
       padding: listPadding,
       headerText: headerText,
       itemTextStyle: widget.listItemStyle,
       onItemSelect: (value) {
-        if (headerText != items[value]) {
-          widget.controller.text = items[value];
+        if (widget.selectedItem != items[value]) {
+          widget.controller.text = items[value].toString();
           if (widget.onChangedIndex != null) {
             widget.onChangedIndex!(value);
           }
@@ -154,8 +155,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
           width: widget.size.width + 24,
           child: CompositedTransformFollower(
             link: widget.layerLink,
-            followerAnchor:
-                displayOverlayBottom ? Alignment.topLeft : Alignment.bottomLeft,
+            followerAnchor: displayOverlayBottom ? Alignment.topLeft : Alignment.bottomLeft,
             showWhenUnlinked: false,
             offset: overlayOffset,
             child: Container(
@@ -185,8 +185,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                       height: items.length > 2 ? 96 : null,
                       child: ClipRRect(
                         borderRadius: borderRadius,
-                        child: NotificationListener<
-                            OverscrollIndicatorNotification>(
+                        child: NotificationListener<OverscrollIndicatorNotification>(
                           onNotification: (notification) {
                             notification.disallowIndicator();
                             return true;
@@ -208,9 +207,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
-                              children: [
-                                items.length > 2 ? Expanded(child: list) : list
-                              ],
+                              children: [items.length > 2 ? Expanded(child: list) : list],
                             ),
                           ),
                         ),
@@ -239,9 +236,10 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
   }
 }
 
-class _ItemsList extends StatelessWidget {
+class _ItemsList<T> extends StatelessWidget {
   final ScrollController scrollController;
-  final List<String> items;
+  final List<T> items;
+  final T selectedItem;
   final bool excludeSelected;
   final String headerText;
   final ValueSetter<int> onItemSelect;
@@ -253,6 +251,7 @@ class _ItemsList extends StatelessWidget {
 
   const _ItemsList({
     Key? key,
+    required this.selectedItem,
     required this.scrollController,
     required this.items,
     required this.excludeSelected,
@@ -279,7 +278,8 @@ class _ItemsList extends StatelessWidget {
         padding: padding,
         itemCount: items.length,
         itemBuilder: (_, index) {
-          final selected = !excludeSelected && headerText == items[index];
+          final selected = !excludeSelected &&
+              (selectedItem != null ? selectedItem == items[index] : headerText == items[index]);
           return Material(
             color: Colors.transparent,
             child: InkWell(
@@ -297,7 +297,7 @@ class _ItemsList extends StatelessWidget {
                       children: [
                         Flexible(
                           child: Text(
-                            items[index],
+                            items[index].toString(),
                             style: selected ? selectedItemStyle : listItemStyle,
                             maxLines: 5,
                             overflow: TextOverflow.ellipsis,
@@ -310,8 +310,7 @@ class _ItemsList extends StatelessWidget {
                     ),
                   ),
                   const Padding(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Divider(height: 1, thickness: 1)),
+                      padding: EdgeInsets.only(left: 16), child: Divider(height: 1, thickness: 1)),
                 ],
               ),
             ),

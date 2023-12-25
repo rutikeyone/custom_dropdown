@@ -7,8 +7,8 @@ part 'dropdown_field.dart';
 part 'dropdown_overlay.dart';
 part 'overlay_builder.dart';
 
-class CustomDropdown extends StatefulWidget {
-  final List<String> items;
+class CustomDropdown<T> extends StatefulWidget {
+  final List<T> items;
   final String? hintText;
   final TextStyle? hintStyle;
   final TextStyle? selectedStyle;
@@ -20,14 +20,13 @@ class CustomDropdown extends StatefulWidget {
   final BorderSide? errorBorderSide;
   final BorderRadius? borderRadius;
   final Widget? fieldSuffixIcon;
-  final Function(String)? onChanged;
   final ValueChanged<int>? onChangedIndex;
   final bool? excludeSelected;
   final Color? fillColor;
   final bool? canCloseOutsideBounds;
   final double? heightButton;
   final ValueChanged<bool> overlayChanged;
-  final String? selectedItem;
+  final T? selectedItem;
   final Widget? selectedIcon;
   final Color? itemBackgroundColor;
   final Decoration? decoration;
@@ -52,7 +51,6 @@ class CustomDropdown extends StatefulWidget {
     this.borderRadius,
     this.borderSide,
     this.fieldSuffixIcon,
-    this.onChanged,
     this.onChangedIndex,
     this.excludeSelected = true,
     this.fillColor = Colors.white,
@@ -115,6 +113,8 @@ class CustomDropdownState extends State<CustomDropdown> {
       overlayChanged: widget.overlayChanged,
       overlay: (size, hideCallback) {
         return _DropdownOverlay(
+          controller: controller,
+          selectedItem: widget.selectedItem,
           noElementStyle: widget.noElementStyle,
           selectedItemStyle: widget.selectedItemStyle,
           notElementLabel: widget.notElementLabel,
@@ -124,11 +124,10 @@ class CustomDropdownState extends State<CustomDropdown> {
           stickyKey: _stickyKey,
           onChangedIndex: widget.onChangedIndex,
           items: widget.items,
-          controller: controller,
           size: size,
           layerLink: layerLink,
           hideOverlay: hideCallback,
-          headerStyle: controller.text.isNotEmpty ? selectedStyle : hintStyle,
+          headerStyle: widget.selectedItem != null ? selectedStyle : hintStyle,
           hintText: hintText,
           listItemStyle: widget.listItemStyle,
           excludeSelected: widget.excludeSelected,
@@ -154,7 +153,6 @@ class CustomDropdownState extends State<CustomDropdown> {
             hintStyle: hintStyle,
             hintText: hintText,
             suffixIcon: widget.fieldSuffixIcon,
-            onChanged: widget.onChanged,
             fillColor: widget.fillColor,
           ),
         );
