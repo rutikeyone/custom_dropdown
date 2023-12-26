@@ -84,7 +84,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
     });
 
     headerText =
-        widget.selectedItem != null ? widget.selectedItem.toString() : widget.controller.text;
+        widget.selectedItem != null ? widget.selectedItem!.getName() : widget.controller.text;
     if (widget.excludeSelected! && widget.items.length > 1 && widget.selectedItem != null) {
       items = widget.items.where((item) => item != widget.selectedItem).toList();
     } else {
