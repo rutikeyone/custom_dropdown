@@ -56,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomDropdown(
+            dropdownOverlayHeight: items.length > 2 ? 144 : null,
             selectedItem: selectedItem,
             noElementStyle: const TextStyle(fontSize: 18, color: Colors.red),
             itemBackgroundColor: Colors.red,

@@ -30,6 +30,7 @@ class _DropdownOverlay extends StatefulWidget {
   final TextStyle? selectedItemStyle;
   final Widget Function(Widget, ScrollController)? itemBuilder;
   final ScrollbarThemeData? scrollBarTheme;
+  final int? dropdownOverlayHeight;
 
   const _DropdownOverlay({
     Key? key,
@@ -54,6 +55,7 @@ class _DropdownOverlay extends StatefulWidget {
     this.selectedItemStyle,
     this.itemBuilder,
     this.scrollBarTheme,
+    this.dropdownOverlayHeight,
   }) : super(key: key);
 
   @override
@@ -153,6 +155,9 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
       }
     }.call();
 
+    final dropdownOverlayHeight = widget.dropdownOverlayHeight;
+    final double? height = dropdownOverlayHeight?.toDouble() ?? (items.length > 2 ? 96 : null);
+
     final child = Stack(
       children: [
         Positioned(
@@ -186,7 +191,7 @@ class _DropdownOverlayState extends State<_DropdownOverlay> {
                     axisAlignment: displayOverlayBottom ? 1.0 : -1.0,
                     child: SizedBox(
                       key: key2,
-                      height: items.length > 2 ? 96 : null,
+                      height: height,
                       child: ClipRRect(
                         borderRadius: borderRadius,
                         child: NotificationListener<OverscrollIndicatorNotification>(
